@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+# Developer Task
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### The Story
+Your friend Lisa finally made her lifelong dream come true and started her own bakery shop a few months ago. As the business was doing really well and the workload had been increasing significantly, Lisa wanted to have a website showing an overview of the shop’s products and employees. At first, Lisa started developing the website herself but did not have enough time to complete everything because of her busy schedule. Knowing that you have experience in software development, she has asked for your help to finish and modify some things on the website.
 
-## Available Scripts
+### Setup
+To start this application, you need to install Node.js (version 12+) from [Node.js download](https://nodejs.org/en/download/).
 
-In the project directory, you can run:
+Once installed, go to the bakery-shop directory and run the `npm install` command to install the project dependencies then run `npm start` to begin the application.
 
-### `npm start`
+After the last command, the application should open in your browser at `http://localhost:3000/`.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Assignment
+Start by familiarizing yourself with the application and its code. Lisa has left some TODOs in the code to make it easier for you.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. At the moment, the “Employees” view displays static data. You need to make it load and display data from the backend service and add a column for an avatar (note that the avatar should be displayed as an image). The URL to load data is `https://reqres.in/api/users`.
+The data you receive will be in the format you see below:
 
-### `npm test`
+```json
+{
+  "page": "2",
+  "per_page": 2,
+  "total": 12,
+  "total_pages": 6,
+  "data": [
+    {
+      "id": 3,
+      "email": "emma.wong@reqres.in",
+      "first_name": "Emma",
+      "last_name": "Wong",
+      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/olegpogodaev/128.jpg"
+    },
+    {
+      "id": 4,
+      "email": "eve.holt@reqres.in",
+      "first_name": "Eve",
+      "last_name": "Holt",
+      "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/marcoramires/128.jpg"
+    }
+  ]
+}
+```
+2. The “Add” and “Delete” buttons of the “Employees” view do not work. Add an option to add and delete an employee from the list.
+    a. The backend APIs are not ready yet, so just add/remove the employee from the table.
+    b. Add the following validations to the new employee input form (You can use external libraries e.g. [validator](https://www.npmjs.com/package/validator)):
+    - **ID**: required and contains only numbers
+    - **Name**: required and contains only letters
+    - **Email**: required and matches a valid email pattern
+    - **Avatar**: required
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Bonus task**: Display appropriate user error messages below the input fields.
 
-### `npm run build`
+3. Lisa wants to make specific table fields stand out more. Change the following column styles:
+    - Set the font weight of the first table column to bold across the whole application.
+    - Display the quantity of the product in red if it is fewer than three (3) pieces.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+4. Currently, it takes time to understand which products are the least and most expensive. Order the products by price from lowest to highest.
