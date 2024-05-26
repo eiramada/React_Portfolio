@@ -9,9 +9,9 @@ function App() {
     <div>
       <NavigationBar />
       <Routes>
-        <Route path="" exact element={ <Navigate to="/products" /> } />
-        <Route path="products" exact element={ <Products /> } />
-        <Route path="employees" exact element={ <Employees /> } />
+        <Route path="" exact element={<Navigate to="/products" />} />
+        <Route path="products" exact element={<Products />} />
+        <Route path="employees" exact element={<Employees />} />
       </Routes>
     </div>
   );
