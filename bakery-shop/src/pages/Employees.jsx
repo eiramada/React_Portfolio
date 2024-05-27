@@ -8,7 +8,8 @@ function Employees() {
   const [message, setMessage] = useState();
 
   const idRef = useRef();
-  const nameRef = useRef();
+  const firstNameRef = useRef();
+  const lastNameRef = useRef();
   const emailRef = useRef();
   const avatarRef = useRef();
 
@@ -40,8 +41,10 @@ function Employees() {
     }
 
     if (
-      !nameRef.current.value ||
-      !validator.isAlpha(nameRef.current.value.replace(" ", ""))
+      !firstNameRef.current.value ||
+      !validator.isAlpha(firstNameRef.current.value.replace(" ", "")) ||
+      !lastNameRef.current.value ||
+      !validator.isAlpha(lastNameRef.current.value.replace(" ", ""))
     ) {
       setMessage("Name is required and has to contain only letters");
       return false;
@@ -64,8 +67,8 @@ function Employees() {
   const addEmployeeToTable = () => {
     const newEmployee = {
       id: Number(idRef.current.value),
-      first_name: nameRef.current.value.split(" ")[0],
-      last_name: nameRef.current.value.split(" ")[1] || "",
+      first_name: firstNameRef.current.value,
+      last_name: lastNameRef.current.value,
       email: emailRef.current.value,
       avatar: avatarRef.current.value,
     };
@@ -75,7 +78,8 @@ function Employees() {
 
   const resetValues = () => {
     idRef.current.value = "";
-    nameRef.current.value = "";
+    firstNameRef.current.value = "";
+    lastNameRef.current.value = "";
     emailRef.current.value = "";
     avatarRef.current.value = "";
   };
@@ -89,7 +93,8 @@ function Employees() {
           <thead>
             <tr>
               <th scope="col">ID</th>
-              <th scope="col">Name</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Last Name</th>
               <th scope="col">Email</th>
               <th scope="col">Avatar</th>
               <th scope="col">Actions</th>
@@ -128,9 +133,18 @@ function Employees() {
               <td>
                 <input
                   type="text"
-                  placeholder="Name"
+                  placeholder="First Name"
                   className="form-control"
-                  ref={nameRef}
+                  ref={firstNameRef}
+                />
+                </td>
+                <td>
+                  
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  className="form-control"
+                  ref={lastNameRef}
                 />
               </td>
               <td>

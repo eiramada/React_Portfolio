@@ -50,7 +50,7 @@ function Products() {
                 <tr key={product.name + product.price}>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
-                  <td class={product.quantity < 3 ? "text-danger" : ""}>
+                  <td className={product.quantity < 3 ? "text-danger" : ""}>
                     {product.quantity}
                   </td>
                   <td>{product.store}</td>
