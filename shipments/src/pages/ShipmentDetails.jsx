@@ -1,20 +1,27 @@
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import MKBox from "components/MKBox";
 import MKButton from "components/MKButton";
 import MKInput from "components/MKInput";
 import MKTypography from "components/MKTypography";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import "../css/shipmentDetails.css";
 import shipmentsFile from "../data/shipments.json";
 
 function ShipmentDetails() {
   const { orderNo } = useParams();
-  const shipmentIndex = shipmentsFile.findIndex((s) => s.orderNo === orderNo);
-  const shipment = shipmentsFile[shipmentIndex];
+  const [shipments, setShipments] = useState([]);
+  const shipmentIndex = shipments.findIndex((s) => s.orderNo === orderNo);
+
+  const shipment = shipmentIndex !== -1 ? shipments[shipmentIndex] : null;
 
   const [isEditing, setIsEditing] = useState(false);
+  const [date, setDate] = useState(
+    shipment ? new Date(shipment.date) : new Date()
+  );
 
   const orderNoRef = useRef();
-  const dateRef = useRef();
   const customerRef = useRef();
   const trackingNoRef = useRef();
   const consigneeRef = useRef();
@@ -24,11 +31,34 @@ function ShipmentDetails() {
     setIsEditing(true);
   };
 
+  const url = "https://my.api.mockaroo.com/shipments.json?key=5e0b62d0";
+
+  useEffect(() => {
+    fetch(url)
+      .then((result) => {
+        if (!result.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return result.json();
+      })
+      .then((json) => {
+        if (json.error) {
+          throw new Error(json.error);
+        }
+        setShipments(json);
+      })
+      .catch(() => {
+        setShipments(shipmentsFile);
+      });
+  }, [url]);
+
   const handleSaveClick = () => {
-    shipmentsFile[shipmentIndex] = {
+    if (!shipment) return;
+
+    shipments[shipmentIndex] = {
       ...shipment,
       orderNo: orderNoRef.current.value,
-      date: dateRef.current.value,
+      date: date.toISOString().substring(0, 10),
       customer: customerRef.current.value,
       trackingNo: trackingNoRef.current.value,
       consignee: consigneeRef.current.value,
@@ -37,125 +67,158 @@ function ShipmentDetails() {
     setIsEditing(false);
   };
 
+  if (!shipment) {
+    return (
+      <MKBox className="card-container">
+        <Link to="/shipments">
+          <MKButton className="button" color="primary" variant="outlined">
+            Back to Shipments
+          </MKButton>
+        </Link>
+        <MKTypography variant="h4">Shipment not found</MKTypography>
+      </MKBox>
+    );
+  }
+
   return (
-    <MKBox className="container">
-      <Link to="/shipments">
-        <MKButton variant="outlined">Back to Shipments</MKButton>
-      </Link>
-      <MKBox className="card">
-        <MKBox className="card-header">
-          <MKTypography variant="h4" className="card-title">
-            Shipment Details
-          </MKTypography>
-        </MKBox>
-        <MKBox className="card-body">
-          <MKBox className="row">
-            <MKBox className="col">
-              <MKTypography variant="label">Order No</MKTypography>
-              {isEditing ? (
-                <MKInput
-                  type="text"
-                  defaultValue={shipment.orderNo}
-                  inputRef={orderNoRef}
-                />
-              ) : (
-                <MKTypography variant="paragraph">
-                  {shipment.orderNo}
-                </MKTypography>
-              )}
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <MKBox className="card-container">
+        <Link to="/shipments">
+          <MKButton className="button" color="primary" variant="outlined">
+            Back to Shipments
+          </MKButton>
+        </Link>
+        <MKBox className="card">
+          <MKBox className="card-header">
+            <MKTypography variant="h4" className="card-title">
+              Shipment Details
+            </MKTypography>
+          </MKBox>
+          <MKBox className="card-body">
+            <MKBox className="row">
+              <MKBox className="col">
+                <MKTypography variant="label">Order No: </MKTypography>
+                {isEditing ? (
+                  <MKInput
+                    type="text"
+                    defaultValue={shipment.orderNo}
+                    inputRef={orderNoRef}
+                  />
+                ) : (
+                  <MKTypography variant="paragraph">
+                    {shipment.orderNo}
+                  </MKTypography>
+                )}
+              </MKBox>
+              <MKBox className="col">
+                <MKTypography variant="label">Date: </MKTypography>
+                {isEditing ? (
+                  <DatePicker
+                    value={date}
+                    onChange={(newDate) => setDate(newDate)}
+                    renderInput={(params) => <MKInput {...params} />}
+                  />
+                ) : (
+                  <MKTypography variant="paragraph">
+                    {shipment.date}
+                  </MKTypography>
+                )}
+              </MKBox>
             </MKBox>
-            <MKBox className="col">
-              <MKTypography variant="label">Date</MKTypography>
-              {isEditing ? (
-                <MKInput
-                  type="text"
-                  defaultValue={shipment.date}
-                  inputRef={dateRef}
-                />
-              ) : (
-                <MKTypography variant="paragraph">{shipment.date}</MKTypography>
-              )}
+            <MKBox className="row">
+              <MKBox className="col">
+                <MKTypography variant="label">Customer: </MKTypography>
+                {isEditing ? (
+                  <MKInput
+                    type="text"
+                    defaultValue={shipment.customer}
+                    inputRef={customerRef}
+                  />
+                ) : (
+                  <MKTypography variant="paragraph">
+                    {shipment.customer}
+                  </MKTypography>
+                )}
+              </MKBox>
+              <MKBox className="col">
+                <MKTypography variant="label">Tracking No: </MKTypography>
+                {isEditing ? (
+                  <MKInput
+                    type="text"
+                    defaultValue={shipment.trackingNo}
+                    inputRef={trackingNoRef}
+                  />
+                ) : (
+                  <MKTypography variant="paragraph">
+                    {shipment.trackingNo}
+                  </MKTypography>
+                )}
+              </MKBox>
+            </MKBox>
+            <MKBox className="row">
+              <MKBox className="col">
+                <MKTypography variant="label">Consignee: </MKTypography>
+                {isEditing ? (
+                  <MKInput
+                    type="text"
+                    defaultValue={shipment.consignee}
+                    inputRef={consigneeRef}
+                  />
+                ) : (
+                  <MKTypography variant="paragraph">
+                    {shipment.consignee}
+                  </MKTypography>
+                )}
+              </MKBox>
+              <MKBox className="col">
+                <MKTypography variant="label">Status: </MKTypography>
+                {isEditing ? (
+                  <MKInput
+                    type="text"
+                    defaultValue={shipment.status}
+                    inputRef={statusRef}
+                  />
+                ) : (
+                  <MKTypography variant="paragraph">
+                    {shipment.status}
+                  </MKTypography>
+                )}
+              </MKBox>
             </MKBox>
           </MKBox>
-          <MKBox className="row">
-            <MKBox className="col">
-              <MKTypography variant="label">Customer</MKTypography>
-              {isEditing ? (
-                <MKInput
-                  type="text"
-                  defaultValue={shipment.customer}
-                  inputRef={customerRef}
-                />
-              ) : (
-                <MKTypography variant="paragraph">
-                  {shipment.customer}
-                </MKTypography>
-              )}
-            </MKBox>
-            <MKBox className="col">
-              <MKTypography variant="label">Tracking No</MKTypography>
-              {isEditing ? (
-                <MKInput
-                  type="text"
-                  defaultValue={shipment.trackingNo}
-                  inputRef={trackingNoRef}
-                />
-              ) : (
-                <MKTypography variant="paragraph">
-                  {shipment.trackingNo}
-                </MKTypography>
-              )}
-            </MKBox>
-          </MKBox>
-          <MKBox className="row">
-            <MKBox className="col">
-              <MKTypography variant="label">Consignee</MKTypography>
-              {isEditing ? (
-                <MKInput
-                  type="text"
-                  defaultValue={shipment.consignee}
-                  inputRef={consigneeRef}
-                />
-              ) : (
-                <MKTypography variant="paragraph">
-                  {shipment.consignee}
-                </MKTypography>
-              )}
-            </MKBox>
-            <MKBox className="col">
-              <MKTypography variant="label">Status</MKTypography>
-              {isEditing ? (
-                <MKInput
-                  type="text"
-                  defaultValue={shipment.status}
-                  inputRef={statusRef}
-                />
-              ) : (
-                <MKTypography variant="paragraph">
-                  {shipment.status}
-                </MKTypography>
-              )}
-            </MKBox>
-          </MKBox>
-        </MKBox>
-        <MKBox className="card-footer">
-          {isEditing ? (
-            <>
-              <MKButton variant="contained" onClick={handleSaveClick}>
-                Save
+          <MKBox className="card-footer">
+            {isEditing ? (
+              <>
+                <MKButton
+                  variant="contained"
+                  onClick={handleSaveClick}
+                  className="button"
+                >
+                  Save
+                </MKButton>
+                <Link to="/shipments">
+                  <MKButton
+                    color="warning"
+                    variant="outlined"
+                    className="button"
+                  >
+                    Cancel
+                  </MKButton>
+                </Link>
+              </>
+            ) : (
+              <MKButton
+                variant="contained"
+                onClick={handleEditClick}
+                className="button"
+              >
+                Edit
               </MKButton>
-              <Link to="/shipments">
-                <MKButton variant="outlined">Cancel</MKButton>
-              </Link>
-            </>
-          ) : (
-            <MKButton variant="contained" onClick={handleEditClick}>
-              Edit
-            </MKButton>
-          )}
+            )}
+          </MKBox>
         </MKBox>
       </MKBox>
-    </MKBox>
+    </LocalizationProvider>
   );
 }
 
