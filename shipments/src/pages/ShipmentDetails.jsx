@@ -1,4 +1,8 @@
-import React, { useRef, useState } from "react";
+import MKBox from "components/MKBox";
+import MKButton from "components/MKButton";
+import MKInput from "components/MKInput";
+import MKTypography from "components/MKTypography";
+import { useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import shipmentsFile from "../data/shipments.json";
 
@@ -34,110 +38,124 @@ function ShipmentDetails() {
   };
 
   return (
-    <div>
+    <MKBox className="container">
       <Link to="/shipments">
-        <button>Back to Shipments</button>
+        <MKButton variant="outlined">Back to Shipments</MKButton>
       </Link>
-      <div className="shipment-details">
-        <h2>Shipment Details</h2>
-        <div className="shipment-info">
-          <div className="shipment-row">
-            <div className="shipment-column">
-              <label>orderNo</label>
+      <MKBox className="card">
+        <MKBox className="card-header">
+          <MKTypography variant="h4" className="card-title">
+            Shipment Details
+          </MKTypography>
+        </MKBox>
+        <MKBox className="card-body">
+          <MKBox className="row">
+            <MKBox className="col">
+              <MKTypography variant="label">Order No</MKTypography>
               {isEditing ? (
-                <input
+                <MKInput
                   type="text"
-                  name="orderNo"
                   defaultValue={shipment.orderNo}
-                  ref={orderNoRef}
+                  inputRef={orderNoRef}
                 />
               ) : (
-                <div className="shipment-data">{shipment.orderNo}</div>
+                <MKTypography variant="paragraph">
+                  {shipment.orderNo}
+                </MKTypography>
               )}
-            </div>
-            <div className="shipment-column">
-              <label>date</label>
+            </MKBox>
+            <MKBox className="col">
+              <MKTypography variant="label">Date</MKTypography>
               {isEditing ? (
-                <input
+                <MKInput
                   type="text"
-                  name="date"
                   defaultValue={shipment.date}
-                  ref={dateRef}
+                  inputRef={dateRef}
                 />
               ) : (
-                <div className="shipment-data">{shipment.date}</div>
+                <MKTypography variant="paragraph">{shipment.date}</MKTypography>
               )}
-            </div>
-          </div>
-          <div className="shipment-row">
-            <div className="shipment-column">
-              <label>customer</label>
+            </MKBox>
+          </MKBox>
+          <MKBox className="row">
+            <MKBox className="col">
+              <MKTypography variant="label">Customer</MKTypography>
               {isEditing ? (
-                <input
+                <MKInput
                   type="text"
-                  name="customer"
                   defaultValue={shipment.customer}
-                  ref={customerRef}
+                  inputRef={customerRef}
                 />
               ) : (
-                <div className="shipment-data">{shipment.customer}</div>
+                <MKTypography variant="paragraph">
+                  {shipment.customer}
+                </MKTypography>
               )}
-            </div>
-            <div className="shipment-column">
-              <label>trackingNo</label>
+            </MKBox>
+            <MKBox className="col">
+              <MKTypography variant="label">Tracking No</MKTypography>
               {isEditing ? (
-                <input
+                <MKInput
                   type="text"
-                  name="trackingNo"
                   defaultValue={shipment.trackingNo}
-                  ref={trackingNoRef}
+                  inputRef={trackingNoRef}
                 />
               ) : (
-                <div className="shipment-data">{shipment.trackingNo}</div>
+                <MKTypography variant="paragraph">
+                  {shipment.trackingNo}
+                </MKTypography>
               )}
-            </div>
-          </div>
-          <div className="shipment-row">
-            <div className="shipment-column">
-              <label>consignee</label>
+            </MKBox>
+          </MKBox>
+          <MKBox className="row">
+            <MKBox className="col">
+              <MKTypography variant="label">Consignee</MKTypography>
               {isEditing ? (
-                <input
+                <MKInput
                   type="text"
-                  name="consignee"
                   defaultValue={shipment.consignee}
-                  ref={consigneeRef}
+                  inputRef={consigneeRef}
                 />
               ) : (
-                <div className="shipment-data">{shipment.consignee}</div>
+                <MKTypography variant="paragraph">
+                  {shipment.consignee}
+                </MKTypography>
               )}
-            </div>
-            <div className="shipment-column">
-              <label>status</label>
+            </MKBox>
+            <MKBox className="col">
+              <MKTypography variant="label">Status</MKTypography>
               {isEditing ? (
-                <input
+                <MKInput
                   type="text"
-                  name="status"
                   defaultValue={shipment.status}
-                  ref={statusRef}
+                  inputRef={statusRef}
                 />
               ) : (
-                <div className="shipment-data">{shipment.status}</div>
+                <MKTypography variant="paragraph">
+                  {shipment.status}
+                </MKTypography>
               )}
-            </div>
-          </div>
-        </div>
-        {isEditing ? (
-          <>
-            <button onClick={handleSaveClick}>Save</button>
-            <Link to="/shipments">
-              <button>Cancel</button>
-            </Link>
-          </>
-        ) : (
-          <button onClick={handleEditClick}>Edit</button>
-        )}
-      </div>
-    </div>
+            </MKBox>
+          </MKBox>
+        </MKBox>
+        <MKBox className="card-footer">
+          {isEditing ? (
+            <>
+              <MKButton variant="contained" onClick={handleSaveClick}>
+                Save
+              </MKButton>
+              <Link to="/shipments">
+                <MKButton variant="outlined">Cancel</MKButton>
+              </Link>
+            </>
+          ) : (
+            <MKButton variant="contained" onClick={handleEditClick}>
+              Edit
+            </MKButton>
+          )}
+        </MKBox>
+      </MKBox>
+    </MKBox>
   );
 }
 
