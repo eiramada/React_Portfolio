@@ -13,7 +13,7 @@ TECH:
 
 BENEFICIAL ADDITIONAL POINTS:
 	
-- Use one CSS template (for example get some from here: https://www.creative-tim.com/templates/free)
+- Use one CSS template (for example get some from here: https://www.creative-tim.com/templates/react-free)
 - Implement delete button on the table
 - Implement update on Details panel (field values could be changed in the UI)
 
