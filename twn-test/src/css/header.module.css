@@ -1,0 +1,32 @@
+.header {
+  /* display: flex;
+  align-items: center;
+  padding: 10px ;
+  background-color: #f8f8f8; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f8f8;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggleMenuButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.toggleMenuIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.logo {
+  height: 50px;
+  margin-left: auto ;
+}
