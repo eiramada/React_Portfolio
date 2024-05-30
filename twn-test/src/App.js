@@ -11,14 +11,12 @@ function App() {
 
   function toggleSidebar() {
     setIsSidebarOpen(!isSidebarOpen);
-    console.log("toggle", isSidebarOpen);
   }
 
-  console.log("issidebaropen", isSidebarOpen);
   return (
     <div className="app">
       <Header toggleSidebar={toggleSidebar} />
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar}/>
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />

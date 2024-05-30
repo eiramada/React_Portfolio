@@ -1,0 +1,33 @@
+.article {
+  margin-left: 220px;
+  padding: 20px;
+}
+
+.article h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.article .intro,
+.article .body {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.article_image {
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+}
+
+.tags {
+  margin-top: 20px;
+}
+
+.tag {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 4px;
+  background: #e0e0e0;
+  border-radius: 4px;
+}
