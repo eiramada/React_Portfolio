@@ -10,11 +10,10 @@ import "../css/shipmentDetails.css";
 import shipmentsFile from "../data/shipments.json";
 
 function ShipmentDetails() {
-  const { orderNo } = useParams();
+  const { index } = useParams();
   const [shipments, setShipments] = useState([]);
-  const shipmentIndex = shipments.findIndex((s) => s.orderNo === orderNo);
 
-  const shipment = shipmentIndex !== -1 ? shipments[shipmentIndex] : null;
+  const shipment = index !== -1 ? shipments[index] : null;
 
   const [isEditing, setIsEditing] = useState(false);
   const [date, setDate] = useState(
@@ -31,31 +30,30 @@ function ShipmentDetails() {
     setIsEditing(true);
   };
 
-  const url = "https://my.api.mockaroo.com/shipments.json?key=5e0b62d0";
+  //Every request gets new set of data.
+  // const url = "https://my.api.mockaroo.com/shipments.json?key=5e0b62d0";
+  const url = "https://my.api.mockaroo.com/shipments.json";
 
   useEffect(() => {
     fetch(url)
       .then((result) => {
-        if (!result.ok) {
-          throw new Error("Network response was not ok");
-        }
         return result.json();
       })
       .then((json) => {
         if (json.error) {
-          throw new Error(json.error);
+          console.log(json.error);
+          setShipments(shipmentsFile);
+        } else {
+          setShipments(json);
         }
-        setShipments(json);
-      })
-      .catch(() => {
-        setShipments(shipmentsFile);
+        console.log(json);
       });
   }, [url]);
 
   const handleSaveClick = () => {
     if (!shipment) return;
 
-    shipments[shipmentIndex] = {
+    shipments[index] = {
       ...shipment,
       orderNo: orderNoRef.current.value,
       date: date.toISOString().substring(0, 10),

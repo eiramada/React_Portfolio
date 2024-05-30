@@ -10,30 +10,27 @@ function Shipments() {
   const [shipments, setShipments] = useState([]);
   const [dbShipments, setDbShipments] = useState([]);
 
-  const url = "https://my.api.mockaroo.com/shipments.json?key=5e0b62d0";
+  //Every request gets new set of data.
+  // const url = "https://my.api.mockaroo.com/shipments.json?key=5e0b62d0";
+  const url = "https://my.api.mockaroo.com/shipments.json";
 
   useEffect(() => {
     fetch(url)
       .then((result) => {
-        if (!result.ok) {
-          throw new Error("Network response was not ok");
-        }
         return result.json();
       })
       .then((json) => {
         if (json.error) {
-          throw new Error(json.error);
+          console.log(json.error);
+          setDbShipments(shipmentsFile);
+          setShipments(shipmentsFile);
+        } else {
+          setShipments(json);
         }
-        setShipments(json);
-      })
-      .catch(() => {
-        setDbShipments(shipmentsFile);
-        setShipments(shipmentsFile);
       });
   }, [url]);
 
-  function deleteShipment(shipment) {
-    const index = dbShipments.indexOf(shipment);
+  function deleteShipment(index) {
     shipments.splice(index, 1);
     setShipments(shipments.slice());
   }
@@ -57,7 +54,7 @@ function Shipments() {
             </tr>
           </thead>
           <tbody>
-            {shipments.map((shipment) => (
+            {shipments.map((shipment, index) => (
               <tr key={shipment.orderNo}>
                 <td>{shipment.orderNo}</td>
                 <td>{shipment.date}</td>
@@ -66,7 +63,7 @@ function Shipments() {
                 <td>{shipment.status}</td>
                 <td>{shipment.consignee}</td>
                 <td>
-                  <Link to={`/shipment/${shipment.orderNo}`}>
+                  <Link to={`/shipment/${index}`}>
                     <MKButton
                       color="primary"
                       variant="outlined"
@@ -78,7 +75,7 @@ function Shipments() {
                   <MKButton
                     variant="contained"
                     color="warning"
-                    onClick={() => deleteShipment(shipment)}
+                    onClick={() => deleteShipment(index)}
                     className="button"
                   >
                     Delete
