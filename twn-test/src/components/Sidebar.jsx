@@ -13,14 +13,19 @@ function Sidebar(props) {
           </button>
           <img src="logo.webp" alt="logo" className={styles.logo} />
           <ul>
+          <li>
+              <Link to="/" className={styles.link}>
+                <button className={styles.button}>Home</button>
+              </Link>
+            </li>
             <li>
               <Link to="article" className={styles.link}>
                 <button className={styles.button}>Article</button>
               </Link>
             </li>
             <li>
-              <Link to="/" className={styles.link}>
-                <button className={styles.button}>Home</button>
+              <Link to="/list" className={styles.link}>
+                <button className={styles.button}>List</button>
               </Link>
             </li>
           </ul>

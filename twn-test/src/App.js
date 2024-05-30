@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Article from "./pages/Article";
 import Home from "./pages/Home";
+import Table from "./pages/Table";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="article" element={<Article />} />
+          <Route path="list" element={<Table />} />
         </Routes>
       </main>
     </div>
