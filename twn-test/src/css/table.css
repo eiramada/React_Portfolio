@@ -16,4 +16,15 @@ th button {
   border: none;
   cursor: pointer;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.sort-icon {
+  margin-left: 5px;
+  color: #ccc;
+}
+
+.sort-icon.active {
+  color: #000;
 }
