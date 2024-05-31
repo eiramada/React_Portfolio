@@ -1,11 +1,12 @@
 import {
-  faSortDown,
-  faSortUp,
   faChevronLeft,
   faChevronRight,
+  faSortDown,
+  faSortUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "../css/table.css";
 import listFromFile from "../data/tableInfo.json";
 
@@ -16,6 +17,7 @@ function Table() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [pageNumbers, setPageNumbers] = useState([]);
+  const [expandedRow, setExpandedRow] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -116,6 +118,10 @@ function Table() {
     currentPage * itemsPerPage
   );
 
+  function handleRowClick(itemId) {
+    setExpandedRow(expandedRow === itemId ? null : itemId);
+  }
+
   return (
     <div>
       <div className="table-wrapper">
@@ -147,20 +153,51 @@ function Table() {
           </thead>
           <tbody>
             {paginatedData.map((item) => (
-              <tr key={item.id}>
-                <td>{item.firstname}</td>
-                <td>{item.surname}</td>
-                <td>
-                  {item.sex === "m" ? "Male" : item.sex === "f" ? "Female" : ""}
-                </td>
-                <td>
-                  {Intl.DateTimeFormat(navigator.language).format(
-                    parseBirthDate(item.personal_code)
-                  )}
-                </td>
+              <React.Fragment key={item.id}>
+                <tr
+                  role="button"
+                  onClick={() => handleRowClick(item.id)}
+                  key={item.id}
+                >
+                  <td>{item.firstname}</td>
+                  <td>{item.surname}</td>
+                  <td>
+                    {item.sex === "m"
+                      ? "Male"
+                      : item.sex === "f"
+                      ? "Female"
+                      : ""}
+                  </td>
+                  <td>
+                    {Intl.DateTimeFormat(navigator.language).format(
+                      parseBirthDate(item.personal_code)
+                    )}
+                  </td>
+                  <td>{item.phone}</td>
+                </tr>
+                {expandedRow === item.id && (
+                  <tr>
+                    <td>
+                      <div>
+                        <img
+                          src={item.image.small}
+                          alt={item.image.alt}
+                          title={item.image.title}
+                        />
+                        <div>
+                          <div
+                            dangerouslySetInnerHTML={{ __html: item.intro }}
+                          />
 
-                <td>{item.phone}</td>
-              </tr>
+                          <Link to={`/article/${item.id}`}>
+                            <button>Read More</button>
+                          </Link>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
             ))}
           </tbody>
         </table>
