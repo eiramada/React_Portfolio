@@ -122,6 +122,7 @@ function Table() {
   return (
     <div>
       <div className="table-wrapper">
+      <h1>List</h1>
         <table>
           <thead>
             <tr>
@@ -173,15 +174,15 @@ function Table() {
                   <td>{item.phone}</td>
                 </tr>
                 {expandedRow === item.id && (
-                  <tr>
+                  <tr className="expanded-row">
                     <td colSpan="5">
-                      <div>
+                      <div className="expanded-row-content">
                         <img
                           src={item.image.small}
                           alt={item.image.alt}
                           title={item.image.title}
                         />
-                        <div>
+                        <div className="expanded-row-text">
                           <div
                             dangerouslySetInnerHTML={{ __html: item.intro }}
                           />

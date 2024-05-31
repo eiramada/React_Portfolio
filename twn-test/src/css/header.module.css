@@ -1,8 +1,4 @@
 .header {
-  /* display: flex;
-  align-items: center;
-  padding: 10px ;
-  background-color: #f8f8f8; */
   position: fixed;
   top: 0;
   left: 0;
@@ -10,7 +6,7 @@
   display: flex;
   align-items: center;
   padding: 10px;
-  background-color: #f8f8f8;
+  background-color: #2c3e50;
   z-index: 1000;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -19,6 +15,12 @@
   background: none;
   border: none;
   cursor: pointer;
+  color: #ffffff;
+}
+
+.toggleMenuButton:focus {
+  outline: none;
+  box-shadow: 0 0 2px 2px #ffffff;
 }
 
 .toggleMenuIcon {
@@ -28,5 +30,6 @@
 
 .logo {
   height: 50px;
-  margin-left: auto ;
+  display: block;
+  margin: 0 auto;
 }

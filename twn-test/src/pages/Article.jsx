@@ -26,10 +26,6 @@ const Article = () => {
     return <div>Loading...</div>;
   }
 
-  if (!article) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="article">
       <h1>{article.title}</h1>

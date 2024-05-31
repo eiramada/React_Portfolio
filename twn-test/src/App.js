@@ -18,7 +18,7 @@ function App() {
     <div className="app">
       <Header toggleSidebar={toggleSidebar} />
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <main>
+      <main className={isSidebarOpen ? "main-content" : "closed"}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="article" element={<Article />} />

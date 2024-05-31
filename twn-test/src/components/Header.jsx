@@ -13,7 +13,7 @@ function Header({ toggleSidebar }) {
       >
         <FontAwesomeIcon icon={faBars} className={styles.toggleMenuIcon} />
       </button>
-      <img src="logo.webp" alt="logo" className={styles.logo} />
+      <img src="/logo.webp" alt="logo" className={styles.logo} />
     </header>
   );
 }
