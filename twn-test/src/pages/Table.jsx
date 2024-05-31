@@ -1,4 +1,9 @@
-import { faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSortDown,
+  faSortUp,
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import "../css/table.css";
@@ -10,13 +15,32 @@ function Table() {
   const [sorting, setSorting] = useState({ key: null, direction: "default" });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [pageNumbers, setPageNumbers] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const result = await fetch(apiUrl);
+      const json = await result.json();
+      const fetchedData = json.error ? listFromFile : json.list;
+      setData(fetchedData);
+      calculatePageNumbers(fetchedData);
+    } catch (error) {
+      setData(listFromFile);
+      calculatePageNumbers(listFromFile);
+    }
+  };
+
+  function calculatePageNumbers(data) {
+    const pageNums = [];
+    for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
+      pageNums.push(i);
+    }
+    setPageNumbers(pageNums);
+  }
 
   useEffect(() => {
-    fetch(apiUrl)
-      .then((result) => result.json())
-      .then((json) => setData(json.error ? listFromFile : json.list))
-      .catch(() => setData(listFromFile));
-  }, [apiUrl]);
+    fetchData();
+  }, [apiUrl, itemsPerPage]);
 
   const parseBirthDate = (personal_code) => {
     const codeStr = personal_code.toString();
@@ -81,80 +105,108 @@ function Table() {
     </>
   );
 
-  const handleSelectPage = (event) => {
-    setCurrentPage(Number(event.target.id));
+  const handleSelectPage = (selectedPage) => {
+    if (selectedPage >= 1 && selectedPage <= pageNumbers.length) {
+      setCurrentPage(Number(selectedPage));
+    }
   };
 
-  function renderPageNumbers() {
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
-      pageNumbers.push(i);
-    }
-    return pageNumbers.map((number) => (
-      <li
-        key={number}
-        id={number}
-        onClick={handleSelectPage}
-        className={currentPage === number ? "active" : ""}
-      >
-        {number}
-      </li>
-    ));
-  }
-
-  const currentData = sortedData().slice(
+  const paginatedData = sortedData().slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
   return (
     <div>
-      <table>
-        <thead>
-          <tr>
-            <th>
-              <button onClick={() => sort("firstname")}>
-                First Name{renderSortIcons("firstname")}
-              </button>
-            </th>
-            <th>
-              <button onClick={() => sort("surname")}>
-                Surname {renderSortIcons("surname")}
-              </button>
-            </th>
-            <th>
-              <button onClick={() => sort("sex")}>
-                Sex {renderSortIcons("sex")}
-              </button>
-            </th>
-            <th>
-              <button onClick={() => sort("personal_code")}>
-                Date of Birth {renderSortIcons("personal_code")}
-              </button>
-            </th>
-            <th>Phone</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentData.map((item) => (
-            <tr key={item.id}>
-              <td>{item.firstname}</td>
-              <td>{item.surname}</td>
-              <td>
-                {item.sex === "m" ? "Male" : item.sex === "f" ? "Female" : ""}
-              </td>
-              <td>
-                {Intl.DateTimeFormat(navigator.language).format(
-                  parseBirthDate(item.personal_code)
-                )}
-              </td>
-
-              <td>{item.phone}</td>
+      <div className="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <button onClick={() => sort("firstname")}>
+                  First Name{renderSortIcons("firstname")}
+                </button>
+              </th>
+              <th>
+                <button onClick={() => sort("surname")}>
+                  Surname {renderSortIcons("surname")}
+                </button>
+              </th>
+              <th>
+                <button onClick={() => sort("sex")}>
+                  Sex {renderSortIcons("sex")}
+                </button>
+              </th>
+              <th>
+                <button onClick={() => sort("personal_code")}>
+                  Date of Birth {renderSortIcons("personal_code")}
+                </button>
+              </th>
+              <th>Phone</th>
             </tr>
+          </thead>
+          <tbody>
+            {paginatedData.map((item) => (
+              <tr key={item.id}>
+                <td>{item.firstname}</td>
+                <td>{item.surname}</td>
+                <td>
+                  {item.sex === "m" ? "Male" : item.sex === "f" ? "Female" : ""}
+                </td>
+                <td>
+                  {Intl.DateTimeFormat(navigator.language).format(
+                    parseBirthDate(item.personal_code)
+                  )}
+                </td>
+
+                <td>{item.phone}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {/* <ul id="page-numbers">{renderPageNumbers()}</ul> */}
+      <div className="buttonWrapper">
+        <button
+          onClick={() => handleSelectPage(currentPage - 1)}
+          className={currentPage === 1 ? "disabled" : ""}
+          aria-label="Navigate to previous page"
+        >
+          <FontAwesomeIcon icon={faChevronLeft} />
+        </button>
+        <ul>
+          {pageNumbers.map((pn) => (
+            <li key={pn}>
+              <button
+                onClick={() => {
+                  handleSelectPage(pn);
+                }}
+                className={currentPage === pn ? "active" : ""}
+                aria-label={`Navigate to page ${pn}`}
+              >
+                {pn}
+              </button>
+            </li>
           ))}
-        </tbody>
-      </table>
-      <ul id="page-numbers">{renderPageNumbers()}</ul>
+        </ul>
+        {/* {Array.from({ length: pageNumbers }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handleSelectPage(index + 1)}
+            className={currentPage === index + 1 ? "active" : ""}
+            aria-label={`Navigate to page ${index + 1}`}
+          >
+            {index + 1}
+          </button>
+        ))} */}
+        <button
+          onClick={() => handleSelectPage(currentPage + 1)}
+          className={currentPage === pageNumbers ? "disabled" : ""}
+          aria-label="Navigate to next page"
+        >
+          <FontAwesomeIcon icon={faChevronRight} />
+        </button>
+      </div>
     </div>
   );
 }
