@@ -1,19 +1,17 @@
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styles from "../css/header.module.css";
 
-function Header(props) {
+function Header({ toggleSidebar }) {
   return (
     <header className={styles.header}>
       <button
         aria-label="Toggle Menu"
         className={styles.toggleMenuButton}
-        onClick={props.toggleSidebar}
+        onClick={toggleSidebar}
       >
-        <img
-          src="/toggle-menu-icon.png"
-          alt="Toggle Menu"
-          className={styles.toggleMenuIcon}
-        />
+        <FontAwesomeIcon icon={faBars} className={styles.toggleMenuIcon} />
       </button>
       <img src="logo.webp" alt="logo" className={styles.logo} />
     </header>

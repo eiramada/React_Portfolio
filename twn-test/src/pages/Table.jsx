@@ -21,9 +21,9 @@ function Table() {
 
   const fetchData = async () => {
     try {
-      const result = await fetch(apiUrl);
-      const json = await result.json();
-      const fetchedData = json.error ? listFromFile : json.list;
+      const response = await fetch(apiUrl);
+      const result = await response.json();
+      const fetchedData = result.error ? listFromFile : result.list;
       setData(fetchedData);
       calculatePageNumbers(fetchedData);
     } catch (error) {
@@ -32,13 +32,10 @@ function Table() {
     }
   };
 
-  function calculatePageNumbers(data) {
-    const pageNums = [];
-    for (let i = 1; i <= Math.ceil(data.length / itemsPerPage); i++) {
-      pageNums.push(i);
-    }
-    setPageNumbers(pageNums);
-  }
+  const calculatePageNumbers = (data) => {
+    const totalPages = Math.ceil(data.length / itemsPerPage);
+    setPageNumbers(Array.from({ length: totalPages }, (_, i) => i + 1));
+  };
 
   useEffect(() => {
     fetchData();
@@ -177,7 +174,7 @@ function Table() {
                 </tr>
                 {expandedRow === item.id && (
                   <tr>
-                    <td>
+                    <td colSpan="5">
                       <div>
                         <img
                           src={item.image.small}
@@ -202,7 +199,6 @@ function Table() {
           </tbody>
         </table>
       </div>
-      {/* <ul id="page-numbers">{renderPageNumbers()}</ul> */}
       <div className="buttonWrapper">
         <button
           onClick={() => handleSelectPage(currentPage - 1)}
@@ -226,19 +222,9 @@ function Table() {
             </li>
           ))}
         </ul>
-        {/* {Array.from({ length: pageNumbers }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => handleSelectPage(index + 1)}
-            className={currentPage === index + 1 ? "active" : ""}
-            aria-label={`Navigate to page ${index + 1}`}
-          >
-            {index + 1}
-          </button>
-        ))} */}
-        <button
+         <button
           onClick={() => handleSelectPage(currentPage + 1)}
-          className={currentPage === pageNumbers ? "disabled" : ""}
+          className={currentPage === pageNumbers.length ? "disabled" : ""}
           aria-label="Navigate to next page"
         >
           <FontAwesomeIcon icon={faChevronRight} />
