@@ -10,7 +10,6 @@
   transition: transform 0.3s ease;
   transform: translateX(0);
   z-index: 1100;
-  margin-left: auto;
 }
 
 .closed {

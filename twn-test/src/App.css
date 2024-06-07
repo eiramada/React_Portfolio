@@ -10,9 +10,14 @@ main {
 }
 
 .main-content {
-  margin-left: 250px;
+  margin-left: var(--twn-menuWidth);
+  transition: margin-left 0.25s ease-out;
 }
 
 .closed {
   margin-left: 0;
+}
+
+header, .sidebar, .main-content {
+  font-family: var(--twn-font);
 }

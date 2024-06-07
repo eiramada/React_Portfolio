@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
+import "./css/fonts.css";
 import Article from "./pages/Article";
 import Home from "./pages/Home";
 import Table from "./pages/Table";

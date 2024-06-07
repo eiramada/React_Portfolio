@@ -22,21 +22,22 @@ function Sidebar({ isOpen, toggleSidebar }) {
             <li>
               <Link to="/" className={styles.link}>
                 <button className={styles.button}>
-                  <FontAwesomeIcon icon={faHome} /> Home
+                  <FontAwesomeIcon icon={faHome} className="fa-icon" /> Home
                 </button>
               </Link>
             </li>
             <li>
               <Link to="article" className={styles.link}>
                 <button className={styles.button}>
-                  <FontAwesomeIcon icon={faFileAlt} /> Article
+                  <FontAwesomeIcon icon={faFileAlt} className="fa-icon" />{" "}
+                  Article
                 </button>
               </Link>
             </li>
             <li>
               <Link to="/list" className={styles.link}>
                 <button className={styles.button}>
-                  <FontAwesomeIcon icon={faList} /> List
+                  <FontAwesomeIcon icon={faList} className="fa-icon" /> List
                 </button>
               </Link>
             </li>

@@ -12,7 +12,6 @@ h1 {
   margin-bottom: 20px;
   color: #ffffff;
   text-align: center;
-
 }
 
 table {
@@ -21,7 +20,8 @@ table {
   color: #ffffff;
 }
 
-th, td {
+th,
+td {
   padding: 10px;
   text-align: left;
 }

@@ -11,6 +11,8 @@
   font-size: 2.5em;
   margin-bottom: 20px;
   color: #365370;
+  font-family: "BoosterNextFY", sans-serif;
+  font-weight: 700;
 }
 
 .article .intro,
@@ -18,6 +20,8 @@
   margin-bottom: 20px;
   line-height: 1.6;
   color: #34495e;
+  font-family: "BoosterNextFY", sans-serif;
+  font-weight: 300;
 }
 
 .article_image {

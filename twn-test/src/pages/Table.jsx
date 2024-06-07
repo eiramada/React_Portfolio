@@ -15,7 +15,7 @@ function Table() {
   const apiUrl = "https://midaiganes.irw.ee/api/list?limit=500";
   const [sorting, setSorting] = useState({ key: null, direction: "default" });
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  const itemsPerPage = 10;
   const [pageNumbers, setPageNumbers] = useState([]);
   const [expandedRow, setExpandedRow] = useState(null);
 
@@ -51,7 +51,7 @@ function Table() {
     return new Date(year, month, day);
   };
 
-  const sort = (key) => {
+  const sortTableHeader = (key) => {
     let direction = "asc";
     if (sorting.key === key) {
       if (sorting.direction === "asc") {
@@ -122,27 +122,27 @@ function Table() {
   return (
     <div>
       <div className="table-wrapper">
-      <h1>List</h1>
+        <h1>List</h1>
         <table>
           <thead>
             <tr>
               <th>
-                <button onClick={() => sort("firstname")}>
-                  First Name{renderSortIcons("firstname")}
+                <button onClick={() => sortTableHeader("firstname")}>
+                  First Name {renderSortIcons("firstname")}
                 </button>
               </th>
               <th>
-                <button onClick={() => sort("surname")}>
+                <button onClick={() => sortTableHeader("surname")}>
                   Surname {renderSortIcons("surname")}
                 </button>
               </th>
               <th>
-                <button onClick={() => sort("sex")}>
+                <button onClick={() => sortTableHeader("sex")}>
                   Sex {renderSortIcons("sex")}
                 </button>
               </th>
               <th>
-                <button onClick={() => sort("personal_code")}>
+                <button onClick={() => sortTableHeader("personal_code")}>
                   Date of Birth {renderSortIcons("personal_code")}
                 </button>
               </th>
@@ -223,7 +223,7 @@ function Table() {
             </li>
           ))}
         </ul>
-         <button
+        <button
           onClick={() => handleSelectPage(currentPage + 1)}
           className={currentPage === pageNumbers.length ? "disabled" : ""}
           aria-label="Navigate to next page"
