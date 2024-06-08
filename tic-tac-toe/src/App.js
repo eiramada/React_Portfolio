@@ -1,10 +1,12 @@
 import "./App.css";
+import Gameboard from "./components/Gameboard";
 import RegistrationForm from "./components/RegistrationForm";
 
 function App() {
   return (
-    <div>
+    <div className="app">
       <RegistrationForm />
+        <Gameboard />
     </div>
   );
 }
