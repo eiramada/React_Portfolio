@@ -1,9 +1,10 @@
-import './App.css';
+import "./App.css";
+import RegistrationForm from "./components/RegistrationForm";
 
 function App() {
   return (
-    <div >
-      
+    <div>
+      <RegistrationForm />
     </div>
   );
 }
