@@ -25,12 +25,12 @@
   background-color: rgb(226, 241, 221);
 }
 
+
 .square.filled {
   cursor: default;
 }
 .square.filled:hover {
   cursor: default;
-
   background-color: rgb(233, 229, 229);
 }
 

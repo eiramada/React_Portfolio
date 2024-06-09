@@ -17,7 +17,7 @@ function RegistrationForm() {
       player2: playerTwoRef.current.value.trim(),
     };
 
-    localStorage.setItem("playSet", JSON.stringify(newSetOfPlayers));
+    localStorage.setItem("playerData", JSON.stringify(newSetOfPlayers));
   }
 
   function validatedPlayers() {
