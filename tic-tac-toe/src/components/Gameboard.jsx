@@ -1,39 +1,32 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../css/Gameboard.css";
 import { GameHistoryContext } from "../store/GameHistoryContext";
 
 function Gameboard() {
   const { storeGame } = useContext(GameHistoryContext);
+  const navigate = useNavigate();
 
   const initialData = {
-    player1: "Player 1",
-    player2: "Player 2",
+    players: { player1: "Player 1", player2: "Player 2" },
+    turn: "Player 1",
+    game: Array(9).fill(null),
+    status: "Ongoing",
   };
-  const [data, setData] = useState(
-    () => JSON.parse(localStorage.getItem("playerData")) || initialData
-  );
 
-  const [game, setGame] = useState(
-    () => JSON.parse(localStorage.getItem("game")) || Array(9).fill(null)
-  );
-
-  const [turn, setTurn] = useState(
-    () => localStorage.getItem("turn") || data.player1
-  );
+  const [gameData, setGameData] = useState(() => {
+    const savedData = JSON.parse(localStorage.getItem("gameData"));
+    return savedData || initialData;
+  });
 
   useEffect(() => {
-    localStorage.setItem("turn", turn);
-  }, [turn]);
-
-  useEffect(() => {
-    localStorage.setItem("game", JSON.stringify(game));
-  }, [game]);
+    localStorage.setItem("gameData", JSON.stringify(gameData));
+  }, [gameData]);
 
   function renderSquares() {
-    return game.map((value, index) => (
+    return gameData.game.map((value, index) => (
       <button
         key={index}
         className={`square ${
@@ -52,18 +45,28 @@ function Gameboard() {
   }
 
   function selectSquare(index) {
-    if (winner || draw || game[index]) return;
+    if (winner || draw || gameData.game[index]) return;
 
-    const newState = [...game];
-    newState[index] = turn === data.player1 ? "X" : "O";
-    setGame(newState);
+    const newGameState = [...gameData.game];
+    newGameState[index] =
+      gameData.turn === gameData.players.player1 ? "X" : "O";
+    const newTurn =
+      gameData.turn === gameData.players.player1
+        ? gameData.players.player2
+        : gameData.players.player1;
 
-    if (calculateWinner(newState) || !newState.includes(null)) {
-      return;
+    const updatedGameData = { ...gameData, game: newGameState, turn: newTurn };
+
+    setGameData(updatedGameData);
+
+    const currentWinner = calculateWinner(newGameState);
+    const isDraw = !newGameState.includes(null) && !currentWinner;
+
+    if (currentWinner || isDraw) {
+      const status = isDraw ? "Draw" : "Completed";
+      storeGame(gameDetails(updatedGameData, currentWinner, isDraw, status));
+      setGameData({ ...updatedGameData, status });
     }
-
-    const newTurn = turn === data.player1 ? data.player2 : data.player1;
-    setTurn(newTurn);
   }
 
   const currentDateTime = () => {
@@ -73,32 +76,41 @@ function Gameboard() {
     return `${date} ${time}`;
   };
 
-  const gameDetails = () => ({
-    players: { player1: data.player1, player2: data.player2 },
-    game: game,
+  const gameDetails = (gameData, winner, draw, status) => ({
+    players: gameData.players,
+    game: gameData.game,
     winner: winner || (draw ? "Draw" : null),
     date: currentDateTime(),
-    status: draw ? "Draw" : winner ? "Completed" : "Ongoing",
+    status: status,
   });
 
   function newGame() {
-    storeGame(gameDetails());
-    localStorage.removeItem("turn");
-    localStorage.removeItem("game");
-    setGame(Array(9).fill(null));
-    setTurn(data.player1);
+    const previousWinner = winner || gameData.turn;
+    const newGameData = {
+      players: {
+        player1: previousWinner,
+        player2:
+          previousWinner === gameData.players.player1
+            ? gameData.players.player2
+            : gameData.players.player1,
+      },
+      turn: previousWinner,
+      game: Array(9).fill(null),
+      status: "Ongoing",
+    };
+    setGameData(newGameData);
   }
 
   const winningConditions = [
-    //rows:
+    // rows:
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
-    //columns:
+    // columns:
     [0, 3, 6],
     [1, 4, 7],
     [2, 5, 8],
-    //diagonals:
+    // diagonals:
     [0, 4, 8],
     [2, 4, 6],
   ];
@@ -107,20 +119,22 @@ function Gameboard() {
     for (let i = 0; i < winningConditions.length; i++) {
       const [a, b, c] = winningConditions[i];
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-        return board[a] === "X" ? data.player1 : data.player2;
+        return board[a] === "X"
+          ? gameData.players.player1
+          : gameData.players.player2;
       }
     }
     return null;
   };
 
-  const winner = calculateWinner(game);
-  const draw = !game.includes(null) && !winner;
+  const winner = calculateWinner(gameData.game);
+  const draw = !gameData.game.includes(null) && !winner;
 
   const status = winner
     ? `Winner: ${winner}`
     : draw
     ? "Draw"
-    : `Current player: ${turn}`;
+    : `Current player: ${gameData.turn}`;
 
   return (
     <div>
@@ -129,8 +143,8 @@ function Gameboard() {
       </div>
 
       <div className="game-data">
-        <div>X: {data.player1}</div>
-        <div>O: {data.player2}</div>
+        <div>X: {gameData.players.player1}</div>
+        <div>O: {gameData.players.player2}</div>
         <div role="status" aria-live="polite">
           {status}
         </div>
@@ -144,6 +158,11 @@ function Gameboard() {
         >
           New Game
         </button>
+        <Link to="/">
+          <button className="button" aria-label="Choose new players">
+            New Players
+          </button>
+        </Link>
         <Link to="/scoreboard">
           <button className="button" aria-label="View scoreboard">
             Scoreboard

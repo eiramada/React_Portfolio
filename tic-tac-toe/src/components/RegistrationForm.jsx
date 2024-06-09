@@ -1,27 +1,53 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/RegistrationForm.css";
+import { GameHistoryContext } from "../store/GameHistoryContext";
 
 function RegistrationForm() {
   const playerOneRef = useRef();
   const playerTwoRef = useRef();
   const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
+  const { history } = useContext(GameHistoryContext);
 
   function startGame() {
     if (validatedPlayers()) {
-      savePlayers();
+      const players = assignPlayersBasedOnHistory();
+      saveGameData({
+        players,
+        turn: players.player1,
+        game: Array(9).fill(null),
+      });
       navigate("/game");
     }
   }
 
-  function savePlayers() {
-    const newSetOfPlayers = {
-      player1: playerOneRef.current.value.trim(),
-      player2: playerTwoRef.current.value.trim(),
-    };
+  function assignPlayersBasedOnHistory() {
+    const playerOne = playerOneRef.current.value.trim();
+    const playerTwo = playerTwoRef.current.value.trim();
 
-    localStorage.setItem("playerData", JSON.stringify(newSetOfPlayers));
+    const relevantGames = history.filter(
+      (game) =>
+        (game.players.player1 === playerOne &&
+          game.players.player2 === playerTwo) ||
+        (game.players.player1 === playerTwo &&
+          game.players.player2 === playerOne)
+    );
+
+    if (relevantGames.length > 0) {
+      relevantGames.sort((a, b) => new Date(b.date) - new Date(a.date));
+      const mostRecentGame = relevantGames[0];
+      return {
+        player1: mostRecentGame.winner,
+        player2: mostRecentGame.winner === playerOne ? playerTwo : playerOne,
+      };
+    }
+
+    return { player1: playerOne, player2: playerTwo };
+  }
+
+  function saveGameData(data) {
+    localStorage.setItem("gameData", JSON.stringify(data));
   }
 
   function validatedPlayers() {

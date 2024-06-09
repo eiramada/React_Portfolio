@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { GameHistoryContext } from "../store/GameHistoryContext";
-import "../css/Scoreboard.css";
 import { Link } from "react-router-dom";
+import "../css/Scoreboard.css";
+import { GameHistoryContext } from "../store/GameHistoryContext";
 
 function Scoreboard() {
   const { history } = useContext(GameHistoryContext);
@@ -33,7 +33,9 @@ function Scoreboard() {
       </table>
       <div className="button-container">
         <Link to="/game">
-          <button className="button" aria-label="Start a new game">Game</button>
+          <button className="button" aria-label="Start a new game">
+            Game
+          </button>
         </Link>
       </div>
     </div>

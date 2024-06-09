@@ -4,20 +4,25 @@ const GameHistoryContext = createContext();
 
 const GameHistoryContextProvider = ({ children, initialHistory = [] }) => {
   const [history, setHistory] = useState(() => {
-    const savedHistory = localStorage.getItem("history");
-    return savedHistory ? JSON.parse(savedHistory) : initialHistory;
+    const savedData = JSON.parse(localStorage.getItem("gameData"));
+    return savedData?.history || initialHistory;
   });
 
   const storeGame = (newGame) => {
     setHistory((prevHistory) => {
       const updatedHistory = [...prevHistory, newGame];
-      localStorage.setItem("history", JSON.stringify(updatedHistory));
+      const savedData = JSON.parse(localStorage.getItem("gameData")) || {};
+      localStorage.setItem(
+        "gameData",
+        JSON.stringify({ ...savedData, history: updatedHistory })
+      );
       return updatedHistory;
     });
   };
 
   useEffect(() => {
-    localStorage.setItem("history", JSON.stringify(history));
+    const savedData = JSON.parse(localStorage.getItem("gameData")) || {};
+    localStorage.setItem("gameData", JSON.stringify({ ...savedData, history }));
   }, [history]);
 
   return (
