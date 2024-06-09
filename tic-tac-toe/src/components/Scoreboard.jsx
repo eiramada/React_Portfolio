@@ -9,14 +9,14 @@ function Scoreboard() {
   return (
     <div className="scoreboard-container">
       <h2>Game History</h2>
-      <table className="scoreboard-table">
+      <table className="scoreboard-table" role="table">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Player 1</th>
-            <th>Player 2</th>
-            <th>Winner</th>
-            <th>Status</th>
+            <th scope="col">Date</th>
+            <th scope="col">Player 1</th>
+            <th scope="col">Player 2</th>
+            <th scope="col">Winner</th>
+            <th scope="col">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -31,9 +31,11 @@ function Scoreboard() {
           ))}
         </tbody>
       </table>
-      <Link to="/game">
-        <button className="button">Game</button>
-      </Link>
+      <div className="button-container">
+        <Link to="/game">
+          <button className="button" aria-label="Start a new game">Game</button>
+        </Link>
+      </div>
     </div>
   );
 }

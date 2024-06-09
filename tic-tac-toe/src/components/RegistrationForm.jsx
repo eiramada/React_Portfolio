@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "../css/RegistrationForm.css";
 
 function RegistrationForm() {
   const playerOneRef = useRef();
@@ -42,18 +43,36 @@ function RegistrationForm() {
   }
 
   return (
-    <div>
-      {alertMessage && <div>{alertMessage}</div>}
-      <label htmlFor="playerOne">Player 1</label> <br />
-      <input id="playerOne" type="text" ref={playerOneRef} /> <br />
-      <br />
-      <label htmlFor="playerTwo">Player 2</label> <br />
-      <input id="playerTwo" type="text" ref={playerTwoRef} /> <br />
-      <br /> <br />
-      <button className="button" onClick={startGame}>Start</button>
-      <Link to="/scoreboard">
-        <button className="button">Scoreboard</button>
-      </Link>
+    <div className="registration-form">
+      {alertMessage && (
+        <div className="alert" role="alert">
+          {alertMessage}
+        </div>
+      )}
+      <label htmlFor="playerOne">Player 1</label>
+      <input
+        id="playerOne"
+        type="text"
+        ref={playerOneRef}
+        aria-labelledby="playerOne"
+      />
+      <label htmlFor="playerTwo">Player 2</label>
+      <input
+        id="playerTwo"
+        type="text"
+        ref={playerTwoRef}
+        aria-labelledby="playerTwo"
+      />
+      <div className="button-container">
+        <button className="button" onClick={startGame} aria-label="Start game">
+          Start
+        </button>
+        <Link to="/scoreboard">
+          <button className="button" aria-label="View scoreboard">
+            Scoreboard
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }

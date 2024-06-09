@@ -1,3 +1,5 @@
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/Gameboard.css";
@@ -40,7 +42,11 @@ function Gameboard() {
         onClick={() => selectSquare(index)}
         aria-label={value ? `Square filled with ${value}` : "Empty square"}
       >
-        {value}
+        {value === "X" ? (
+          <FontAwesomeIcon icon={faTimes} className="fa-icon" />
+        ) : value === "O" ? (
+          <div className="empty-circle"></div>
+        ) : null}
       </button>
     ));
   }
@@ -125,15 +131,25 @@ function Gameboard() {
       <div className="game-data">
         <div>X: {data.player1}</div>
         <div>O: {data.player2}</div>
-        <div>{status}</div>
+        <div role="status" aria-live="polite">
+          {status}
+        </div>
       </div>
 
-      <button className="button" onClick={newGame}>
-        New Game
-      </button>
-      <Link to="/scoreboard">
-        <button className="button">Scoreboard</button>
-      </Link>
+      <div className="button-container">
+        <button
+          className="button"
+          onClick={newGame}
+          aria-label="Start a new game"
+        >
+          New Game
+        </button>
+        <Link to="/scoreboard">
+          <button className="button" aria-label="View scoreboard">
+            Scoreboard
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }

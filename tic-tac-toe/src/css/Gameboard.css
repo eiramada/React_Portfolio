@@ -1,52 +1,87 @@
 .board {
-  height: 600px;
-  width: 600px;
   display: grid;
-  grid-template-rows: repeat(3, 1fr);
-  grid-template-columns: repeat(3, 1fr);
-  border: 2px solid pink;
+  grid-template-columns: repeat(3, 200px);
+  grid-template-rows: repeat(3, 200px);
+  gap: 10px;
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
 }
 
 .square {
-  height: 100%;
-  width: 100%;
-  border: 1px solid darkgray;
+  width: 200px;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box;
   font-size: 2rem;
+  border: 1px solid #ddd;
+  background-color: #fff;
   cursor: pointer;
-  background-color: white;
-  cursor: pointer;
-}
-
-.square:hover {
-  background-color: rgb(226, 241, 221);
+  transition: background-color 0.3s ease;
 }
 
 .square.filled {
-  cursor: default;
-}
-.square.filled:hover {
-  cursor: default;
-  background-color: rgb(233, 229, 229);
+  background-color: #f2f2f2;
 }
 
 .square.X {
-  color: red;
+  color: #f54f43;
 }
 
 .square.O {
-  color: blue;
+  color: #4643f5;
+}
+
+.fa-icon {
+  font-size: 6rem;
+}
+
+.empty-circle {
+  width: 4.5rem;
+  height: 4.5rem;
+  border: 7px solid currentColor;
+  border-radius: 50%;
+  background: none;
 }
 
 .game-data {
-  margin-top: 10px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  margin: 20px;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
   gap: 10px;
-  text-align: center;
-  font-size: 1.5rem;
 }
 
+.button-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+}
+
+.button {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 1.2rem;
+  color: white;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  text-align: center;
+  
+}
+
+.button:hover {
+  background-color: #45a049;
+}
+
+.button:active {
+  background-color: #3e8e41;
+}
