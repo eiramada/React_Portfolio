@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { GameHistoryContext } from "../context/GameHistoryContext";
 import "../css/Scoreboard.css";
-import { GameHistoryContext } from "../store/GameHistoryContext";
 
 function Scoreboard() {
   const { history } = useContext(GameHistoryContext);

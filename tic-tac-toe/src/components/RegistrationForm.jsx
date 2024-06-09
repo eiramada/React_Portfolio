@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { GameHistoryContext } from "../context/GameHistoryContext";
 import "../css/RegistrationForm.css";
-import { GameHistoryContext } from "../store/GameHistoryContext";
 
 function RegistrationForm() {
   const playerOneRef = useRef();

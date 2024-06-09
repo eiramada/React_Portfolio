@@ -1,13 +1,12 @@
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../css/Gameboard.css";
-import { GameHistoryContext } from "../store/GameHistoryContext";
+import { GameHistoryContext } from "../context/GameHistoryContext";
 
 function Gameboard() {
   const { storeGame } = useContext(GameHistoryContext);
-  const navigate = useNavigate();
 
   const initialData = {
     players: { player1: "Player 1", player2: "Player 2" },
