@@ -9,23 +9,22 @@ function Gameboard() {
   const [data, setData] = useState(
     () => JSON.parse(localStorage.getItem("playerData")) || initialData
   );
+
   const [game, setGame] = useState(
     () => JSON.parse(localStorage.getItem("game")) || Array(9).fill(null)
   );
 
-  const [turn, setTurn] = useState(null);
+  const [turn, setTurn] = useState(
+    () => localStorage.getItem("turn") || data.player1
+  );
 
   useEffect(() => {
-    setTurn(localStorage.getItem("turn") || data.player1);
-  }, [data]);
+    localStorage.setItem("turn", turn);
+  }, [turn]);
 
   useEffect(() => {
     localStorage.setItem("game", JSON.stringify(game));
   }, [game]);
-
-  useEffect(() => {
-    localStorage.setItem("turn", turn);
-  }, [turn, data]);
 
   function renderSquares() {
     return game.map((value, index) => (
@@ -43,13 +42,13 @@ function Gameboard() {
   }
 
   function selectSquare(index) {
-    if (winner || draw) return;
+    if (winner || draw || game[index]) return;
 
-    const newPlay = [...game];
-    newPlay[index] = turn === data.player1 ? "X" : "O";
-    setGame(newPlay);
+    const newState = [...game];
+    newState[index] = turn === data.player1 ? "X" : "O";
+    setGame(newState);
 
-    if (calculateWinner(newPlay) || !newPlay.includes(null)) {
+    if (calculateWinner(newState) || !newState.includes(null)) {
       return;
     }
 
@@ -95,7 +94,7 @@ function Gameboard() {
     ? `Winner: ${winner}`
     : draw
     ? "Draw"
-    : `Next player: ${turn === data.player1 ? data.player2 : data.player1}`;
+    : `Current player: ${turn}`;
 
   return (
     <div>

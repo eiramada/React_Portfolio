@@ -1,17 +1,20 @@
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function RegistrationForm() {
   const playerOneRef = useRef();
   const playerTwoRef = useRef();
   const [alertMessage, setAlertMessage] = useState("");
+  const navigate = useNavigate();
 
   function startGame() {
-    savePlayers();
+    if (validatedPlayers()) {
+      savePlayers();
+      navigate("/game");
+    }
   }
 
   function savePlayers() {
-    if (!validatedPlayers()) return;
-
     const newSetOfPlayers = {
       player1: playerOneRef.current.value.trim(),
       player2: playerTwoRef.current.value.trim(),
@@ -31,9 +34,9 @@ function RegistrationForm() {
 
     if (playerOne.toLowerCase() === playerTwo.toLowerCase()) {
       setAlertMessage("Player names must be unique");
-      return;
+      return false;
     }
-    
+
     setAlertMessage("");
     return true;
   }
