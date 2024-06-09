@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "../css/Gameboard.css";
+import { GameHistoryContext } from "../store/GameHistoryContext";
 
 function Gameboard() {
+  const { storeGame } = useContext(GameHistoryContext);
+
   const initialData = {
     player1: "Player 1",
     player2: "Player 2",
@@ -56,7 +60,23 @@ function Gameboard() {
     setTurn(newTurn);
   }
 
+  const currentDateTime = () => {
+    const d = new Date();
+    const date = d.toISOString().split("T")[0];
+    const time = d.toTimeString().split(" ")[0];
+    return `${date} ${time}`;
+  };
+
+  const gameDetails = () => ({
+    players: { player1: data.player1, player2: data.player2 },
+    game: game,
+    winner: winner || (draw ? "Draw" : null),
+    date: currentDateTime(),
+    status: draw ? "Draw" : winner ? "Completed" : "Ongoing",
+  });
+
   function newGame() {
+    storeGame(gameDetails());
     localStorage.removeItem("turn");
     localStorage.removeItem("game");
     setGame(Array(9).fill(null));
@@ -108,9 +128,12 @@ function Gameboard() {
         <div>{status}</div>
       </div>
 
-      <button className="new-game-button" onClick={newGame}>
+      <button className="button" onClick={newGame}>
         New Game
       </button>
+      <Link to="/scoreboard">
+        <button className="button">Scoreboard</button>
+      </Link>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function RegistrationForm() {
   const playerOneRef = useRef();
@@ -50,7 +50,10 @@ function RegistrationForm() {
       <label htmlFor="playerTwo">Player 2</label> <br />
       <input id="playerTwo" type="text" ref={playerTwoRef} /> <br />
       <br /> <br />
-      <button onClick={startGame}>Start</button>
+      <button className="button" onClick={startGame}>Start</button>
+      <Link to="/scoreboard">
+        <button className="button">Scoreboard</button>
+      </Link>
     </div>
   );
 }

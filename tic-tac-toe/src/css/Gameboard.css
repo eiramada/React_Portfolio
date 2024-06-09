@@ -50,21 +50,3 @@
   font-size: 1.5rem;
 }
 
-.new-game-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 1.2rem;
-  color: white;
-  background-color: #4caf50;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.new-game-button:hover {
-  background-color: #45a049;
-}
-
-.new-game-button:active {
-  background-color: #3e8e41;
-}
